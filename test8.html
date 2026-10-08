@@ -1,0 +1,3627 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>Adaptive Space</title>
+
+
+<style>
+
+/* =========================================================
+   CORE THEME
+========================================================= */
+
+:root {
+
+    --accent: #8b5cf6;
+    --accent-rgb: 139, 92, 246;
+
+    --paper: #f2f0eb;
+    --ink: #111111;
+    --muted: #74716b;
+
+    --line: rgba(17,17,17,.13);
+
+    --pointer-x: 50%;
+    --pointer-y: 50%;
+
+}
+
+
+/* =========================================================
+   RESET
+========================================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+
+html,
+body {
+
+    margin: 0;
+
+    min-height: 100%;
+
+}
+
+
+body {
+
+    min-height: 100vh;
+
+    background:
+
+        radial-gradient(
+            circle at var(--pointer-x) var(--pointer-y),
+            rgba(var(--accent-rgb), .13),
+            transparent 24%
+        ),
+
+        var(--paper);
+
+    color:
+        var(--ink);
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    overflow-x:
+        hidden;
+
+    transition:
+        background .45s ease,
+        color .35s ease;
+
+}
+
+
+/* =========================================================
+   GLOBAL INTERACTION EFFECTS
+========================================================= */
+
+.effect {
+
+    position:
+        fixed;
+
+    pointer-events:
+        none;
+
+    z-index:
+        99999;
+
+}
+
+
+/* Ripple */
+
+.ripple {
+
+    width:
+        24px;
+
+    height:
+        24px;
+
+    border:
+        1.5px solid
+        var(--accent);
+
+    border-radius:
+        50%;
+
+    transform:
+        translate(-50%, -50%)
+        scale(0);
+
+    animation:
+        ripple .8s ease-out forwards;
+
+}
+
+
+@keyframes ripple {
+
+    to {
+
+        transform:
+            translate(-50%, -50%)
+            scale(15);
+
+        opacity:
+            0;
+
+    }
+
+}
+
+
+/* Flash */
+
+.flash {
+
+    width:
+        230px;
+
+    height:
+        230px;
+
+    border-radius:
+        50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(var(--accent-rgb), .18),
+            transparent 68%
+        );
+
+    transform:
+        translate(-50%, -50%)
+        scale(.3);
+
+    animation:
+        flash .55s ease-out forwards;
+
+}
+
+
+@keyframes flash {
+
+    to {
+
+        transform:
+            translate(-50%, -50%)
+            scale(1.8);
+
+        opacity:
+            0;
+
+    }
+
+}
+
+
+/* Particles */
+
+.particle {
+
+    width:
+        6px;
+
+    height:
+        6px;
+
+    border-radius:
+        50%;
+
+    background:
+        var(--accent);
+
+    transform:
+        translate(-50%, -50%);
+
+    animation:
+        particle .75s ease-out forwards;
+
+}
+
+
+@keyframes particle {
+
+    to {
+
+        transform:
+            translate(
+                calc(-50% + var(--dx)),
+                calc(-50% + var(--dy))
+            )
+            scale(.1);
+
+        opacity:
+            0;
+
+    }
+
+}
+
+
+/* =========================================================
+   APP
+========================================================= */
+
+.app {
+
+    width:
+        min(1500px, 94%);
+
+    min-height:
+        100vh;
+
+    margin:
+        0 auto;
+
+    padding:
+        24px 0 35px;
+
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+header {
+
+    display:
+        flex;
+
+    align-items:
+        flex-start;
+
+    justify-content:
+        space-between;
+
+    padding-bottom:
+        18px;
+
+    border-bottom:
+        1px solid
+        var(--line);
+
+}
+
+
+.brand {
+
+    display:
+        flex;
+
+    align-items:
+        flex-start;
+
+    gap:
+        13px;
+
+}
+
+
+.mark {
+
+    width:
+        32px;
+
+    height:
+        32px;
+
+    background:
+        var(--accent);
+
+    display:
+        grid;
+
+    place-items:
+        center;
+
+    transition:
+        background .35s ease;
+
+}
+
+
+.mark::before {
+
+    content:
+        "";
+
+    width:
+        9px;
+
+    height:
+        9px;
+
+    background:
+        var(--paper);
+
+}
+
+
+.title {
+
+    font-size:
+        17px;
+
+    font-weight:
+        800;
+
+    letter-spacing:
+        -.5px;
+
+}
+
+
+.subtitle {
+
+    margin-top:
+        3px;
+
+    font-size:
+        9px;
+
+    color:
+        var(--muted);
+
+    text-transform:
+        uppercase;
+
+    letter-spacing:
+        1.4px;
+
+}
+
+
+.header-right {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    gap:
+        18px;
+
+    font-size:
+        9px;
+
+    color:
+        var(--muted);
+
+    text-transform:
+        uppercase;
+
+    letter-spacing:
+        1px;
+
+}
+
+
+.live-indicator {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    gap:
+        7px;
+
+}
+
+
+.live-dot {
+
+    width:
+        6px;
+
+    height:
+        6px;
+
+    border-radius:
+        50%;
+
+    background:
+        var(--accent);
+
+}
+
+
+/* =========================================================
+   MAIN
+========================================================= */
+
+.main {
+
+    position:
+        relative;
+
+    min-height:
+        870px;
+
+    padding-top:
+        30px;
+
+}
+
+
+/* =========================================================
+   HUGE TYPOGRAPHY
+========================================================= */
+
+.hero {
+
+    position:
+        absolute;
+
+    left:
+        -5px;
+
+    top:
+        35px;
+
+    pointer-events:
+        none;
+
+    user-select:
+        none;
+
+}
+
+
+.hero-small {
+
+    font-size:
+        10px;
+
+    text-transform:
+        uppercase;
+
+    letter-spacing:
+        3px;
+
+    color:
+        var(--accent);
+
+    font-weight:
+        700;
+
+}
+
+
+.hero-title {
+
+    margin:
+        10px 0 0;
+
+    font-size:
+        clamp(
+            75px,
+            12vw,
+            175px
+        );
+
+    line-height:
+        .78;
+
+    letter-spacing:
+        -9px;
+
+    font-weight:
+        900;
+
+}
+
+
+.hero-title span {
+
+    color:
+        transparent;
+
+    -webkit-text-stroke:
+        1px
+        rgba(17,17,17,.25);
+
+}
+
+
+/* =========================================================
+   INTERACTIVE FIELD
+========================================================= */
+
+.field {
+
+    position:
+        absolute;
+
+    left:
+        30%;
+
+    right:
+        2%;
+
+    top:
+        35px;
+
+    height:
+        510px;
+
+    border-left:
+        1px solid
+        var(--line);
+
+    border-bottom:
+        1px solid
+        var(--line);
+
+    overflow:
+        hidden;
+
+    cursor:
+        crosshair;
+
+}
+
+
+/* Grid */
+
+.field::before {
+
+    content:
+        "";
+
+    position:
+        absolute;
+
+    inset:
+        0;
+
+    background-image:
+
+        linear-gradient(
+            90deg,
+            var(--line) 1px,
+            transparent 1px
+        ),
+
+        linear-gradient(
+            var(--line) 1px,
+            transparent 1px
+        );
+
+    background-size:
+        80px 80px;
+
+    opacity:
+        .35;
+
+}
+
+
+/* Field glow */
+
+.field-glow {
+
+    position:
+        absolute;
+
+    width:
+        400px;
+
+    height:
+        400px;
+
+    border-radius:
+        50%;
+
+    left:
+        var(--pointer-x);
+
+    top:
+        var(--pointer-y);
+
+    transform:
+        translate(-50%, -50%);
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(var(--accent-rgb), .12),
+            transparent 68%
+        );
+
+    pointer-events:
+        none;
+
+    transition:
+        left .08s linear,
+        top .08s linear;
+
+}
+
+
+/* =========================================================
+   ADAPTIVE TARGET
+========================================================= */
+
+.target {
+
+    position:
+        absolute;
+
+    left:
+        50%;
+
+    top:
+        50%;
+
+    width:
+        155px;
+
+    height:
+        155px;
+
+    transform:
+        translate(-50%, -50%);
+
+    border:
+        1px solid
+        var(--accent);
+
+    border-radius:
+        50%;
+
+    display:
+        grid;
+
+    place-items:
+        center;
+
+    transition:
+        border-color .35s ease,
+        transform .2s ease;
+
+}
+
+
+.target::before {
+
+    content:
+        "";
+
+    position:
+        absolute;
+
+    width:
+        95px;
+
+    height:
+        95px;
+
+    border:
+        1px solid
+        var(--accent);
+
+    border-radius:
+        50%;
+
+}
+
+
+.target::after {
+
+    content:
+        "";
+
+    position:
+        absolute;
+
+    width:
+        7px;
+
+    height:
+        7px;
+
+    background:
+        var(--accent);
+
+    border-radius:
+        50%;
+
+}
+
+
+.target-label {
+
+    position:
+        absolute;
+
+    top:
+        calc(100% + 18px);
+
+    left:
+        50%;
+
+    transform:
+        translateX(-50%);
+
+    white-space:
+        nowrap;
+
+    font-size:
+        9px;
+
+    text-transform:
+        uppercase;
+
+    letter-spacing:
+        2px;
+
+    color:
+        var(--muted);
+
+}
+
+
+.target.react {
+
+    animation:
+        targetReact .45s ease-out;
+
+}
+
+
+@keyframes targetReact {
+
+    0% {
+
+        transform:
+            translate(-50%, -50%)
+            scale(1);
+
+    }
+
+    45% {
+
+        transform:
+            translate(-50%, -50%)
+            scale(1.25);
+
+    }
+
+    100% {
+
+        transform:
+            translate(-50%, -50%)
+            scale(1);
+
+    }
+
+}
+
+
+/* =========================================================
+   FIELD LABELS
+========================================================= */
+
+.coordinate {
+
+    position:
+        absolute;
+
+    font-size:
+        9px;
+
+    color:
+        var(--muted);
+
+    font-family:
+        monospace;
+
+}
+
+
+.coordinate.top {
+
+    top:
+        14px;
+
+    left:
+        15px;
+
+}
+
+
+.coordinate.bottom {
+
+    bottom:
+        14px;
+
+    right:
+        15px;
+
+}
+
+
+.mode-label {
+
+    position:
+        absolute;
+
+    top:
+        14px;
+
+    right:
+        15px;
+
+    text-align:
+        right;
+
+}
+
+
+.mode-name {
+
+    color:
+        var(--accent);
+
+    font-size:
+        10px;
+
+    font-weight:
+        700;
+
+    text-transform:
+        uppercase;
+
+}
+
+
+.mode-description {
+
+    margin-top:
+        3px;
+
+    font-size:
+        8px;
+
+    color:
+        var(--muted);
+
+}
+
+
+/* =========================================================
+   MODALITY INDEX
+========================================================= */
+
+.index {
+
+    position:
+        absolute;
+
+    left:
+        0;
+
+    top:
+        580px;
+
+    width:
+        27%;
+
+    border-top:
+        1px solid
+        var(--line);
+
+    padding-top:
+        14px;
+
+}
+
+
+.index-title {
+
+    font-size:
+        9px;
+
+    text-transform:
+        uppercase;
+
+    letter-spacing:
+        2px;
+
+    color:
+        var(--muted);
+
+    margin-bottom:
+        13px;
+
+}
+
+
+.index-items {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(5, 1fr);
+
+    gap:
+        8px;
+
+}
+
+
+.index-item {
+
+    font-size:
+        9px;
+
+    color:
+        var(--muted);
+
+}
+
+
+.index-number {
+
+    color:
+        var(--accent);
+
+    font-weight:
+        700;
+
+    margin-bottom:
+        5px;
+
+}
+
+
+/* =========================================================
+   COMMAND DOCK
+========================================================= */
+
+.command-dock {
+
+    position:
+        absolute;
+
+    left:
+        30%;
+
+    right:
+        2%;
+
+    top:
+        575px;
+
+    display:
+        grid;
+
+    grid-template-columns:
+        1fr 155px;
+
+    min-height:
+        125px;
+
+    border:
+        1px solid
+        var(--line);
+
+    background:
+        rgba(242,240,235,.94);
+
+    backdrop-filter:
+        blur(15px);
+
+    overflow:
+        hidden;
+
+    z-index:
+        5;
+
+}
+
+
+/* =========================================================
+   TYPING AREA
+========================================================= */
+
+.command-dock > div:first-child {
+
+    min-width:
+        0;
+
+}
+
+
+#commandInput {
+
+    display:
+        block;
+
+    width:
+        100%;
+
+    height:
+        88px;
+
+    min-height:
+        88px;
+
+    max-height:
+        120px;
+
+    resize:
+        none;
+
+    border:
+        none;
+
+    outline:
+        none;
+
+    background:
+        transparent;
+
+    color:
+        var(--ink);
+
+    padding:
+        18px 20px;
+
+    font-family:
+        ui-monospace,
+        SFMono-Regular,
+        Menlo,
+        Monaco,
+        Consolas,
+        monospace;
+
+    font-size:
+        13px;
+
+    line-height:
+        1.6;
+
+}
+
+
+#commandInput::placeholder {
+
+    color:
+        #99968f;
+
+}
+
+
+#commandInput:focus {
+
+    background:
+        rgba(var(--accent-rgb), .025);
+
+}
+
+
+/* =========================================================
+   PROMINENT VOICE BUTTON
+========================================================= */
+
+.voice {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    width:
+        calc(100% - 40px);
+
+    height:
+        34px;
+
+    margin:
+        0 20px 12px;
+
+    border:
+        1px solid
+        var(--accent);
+
+    background:
+        rgba(var(--accent-rgb), .08);
+
+    color:
+        var(--accent);
+
+    cursor:
+        pointer;
+
+    font-size:
+        10px;
+
+    font-weight:
+        700;
+
+    text-transform:
+        uppercase;
+
+    letter-spacing:
+        1.2px;
+
+    transition:
+        .25s ease;
+
+}
+
+
+.voice:hover {
+
+    background:
+        var(--accent);
+
+    color:
+        white;
+
+    transform:
+        translateY(-1px);
+
+}
+
+
+.voice:active {
+
+    transform:
+        scale(.98);
+
+}
+
+
+.voice.listening {
+
+    background:
+        var(--accent);
+
+    color:
+        white;
+
+    border-color:
+        var(--accent);
+
+    box-shadow:
+        0 0 25px
+        rgba(var(--accent-rgb), .3);
+
+}
+
+
+/* =========================================================
+   COMMAND INFORMATION
+========================================================= */
+
+.command-meta {
+
+    border-left:
+        1px solid
+        var(--line);
+
+    width:
+        155px;
+
+    padding:
+        14px 16px;
+
+    display:
+        flex;
+
+    flex-direction:
+        column;
+
+    justify-content:
+        space-between;
+
+    background:
+        rgba(255,255,255,.25);
+
+}
+
+
+.meta-label {
+
+    font-size:
+        8px;
+
+    text-transform:
+        uppercase;
+
+    letter-spacing:
+        1.3px;
+
+    color:
+        var(--muted);
+
+}
+
+
+.meta-value {
+
+    font-size:
+        11px;
+
+    font-weight:
+        700;
+
+    color:
+        var(--accent);
+
+}
+
+
+/* =========================================================
+   COLOR STRIP
+========================================================= */
+
+.palette {
+
+    position:
+        absolute;
+
+    left:
+        0;
+
+    right:
+        0;
+
+    top:
+        785px;
+
+    height:
+        58px;
+
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(8, 1fr);
+
+    gap:
+        2px;
+
+    border-top:
+        1px solid
+        var(--line);
+
+    overflow:
+        hidden;
+
+    z-index:
+        3;
+
+}
+
+
+.color {
+
+    position:
+        relative;
+
+    cursor:
+        pointer;
+
+    transition:
+        .25s ease;
+
+}
+
+
+.color:hover {
+
+    transform:
+        translateY(-4px);
+
+}
+
+
+.color:active {
+
+    transform:
+        translateY(0)
+        scale(.98);
+
+}
+
+
+.color::after {
+
+    content:
+        attr(data-color);
+
+    position:
+        absolute;
+
+    left:
+        12px;
+
+    bottom:
+        8px;
+
+    font-size:
+        8px;
+
+    font-weight:
+        700;
+
+    text-transform:
+        uppercase;
+
+    letter-spacing:
+        1px;
+
+    color:
+        white;
+
+    mix-blend-mode:
+        difference;
+
+}
+
+
+/* =========================================================
+   BOTTOM INFORMATION
+========================================================= */
+
+.bottom {
+
+    position:
+        absolute;
+
+    left:
+        30%;
+
+    right:
+        2%;
+
+    top:
+        675px;
+
+    display:
+        flex;
+
+    justify-content:
+        space-between;
+
+    align-items:
+        center;
+
+    padding-top:
+        12px;
+
+    border-top:
+        1px solid
+        var(--line);
+
+    z-index:
+        4;
+
+}
+
+
+.stats {
+
+    display:
+        flex;
+
+    gap:
+        30px;
+
+}
+
+
+.stat {
+
+    display:
+        flex;
+
+    align-items:
+        baseline;
+
+    gap:
+        6px;
+
+}
+
+
+.stat-number {
+
+    font-size:
+        17px;
+
+    font-weight:
+        800;
+
+}
+
+
+.stat-label {
+
+    font-size:
+        8px;
+
+    color:
+        var(--muted);
+
+    text-transform:
+        uppercase;
+
+    letter-spacing:
+        1px;
+
+}
+
+
+.ticker {
+
+    max-width:
+        420px;
+
+    font-size:
+        9px;
+
+    color:
+        var(--muted);
+
+    white-space:
+        nowrap;
+
+    overflow:
+        hidden;
+
+    text-overflow:
+        ellipsis;
+
+}
+
+
+.ticker strong {
+
+    color:
+        var(--accent);
+
+}
+
+
+/* =========================================================
+   TOUCH ADAPTATION
+========================================================= */
+
+body.touch-mode .target {
+
+    width:
+        190px;
+
+    height:
+        190px;
+
+}
+
+
+body.touch-mode .color {
+
+    height:
+        85px;
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media(max-width:900px) {
+
+    .main {
+
+        min-height:
+            1100px;
+
+    }
+
+
+    .hero {
+
+        position:
+            relative;
+
+        top:
+            auto;
+
+        left:
+            auto;
+
+        margin-bottom:
+            25px;
+
+    }
+
+
+    .hero-title {
+
+        font-size:
+            clamp(
+                65px,
+                18vw,
+                120px
+            );
+
+    }
+
+
+    .field {
+
+        position:
+            relative;
+
+        left:
+            auto;
+
+        right:
+            auto;
+
+        top:
+            auto;
+
+        height:
+            470px;
+
+    }
+
+
+    .index {
+
+        position:
+            relative;
+
+        left:
+            auto;
+
+        top:
+            auto;
+
+        width:
+            100%;
+
+        margin-top:
+            20px;
+
+    }
+
+
+    .command-dock {
+
+        position:
+            relative;
+
+        left:
+            auto;
+
+        right:
+            auto;
+
+        top:
+            auto;
+
+        margin-top:
+            20px;
+
+    }
+
+
+    .bottom {
+
+        position:
+            relative;
+
+        left:
+            auto;
+
+        right:
+            auto;
+
+        top:
+            auto;
+
+        margin-top:
+            20px;
+
+    }
+
+
+    .palette {
+
+        position:
+            relative;
+
+        left:
+            auto;
+
+        right:
+            auto;
+
+        top:
+            auto;
+
+        margin-top:
+            20px;
+
+    }
+
+}
+
+
+@media(max-width:600px) {
+
+    .app {
+
+        width:
+            92%;
+
+    }
+
+
+    .header-right {
+
+        display:
+            none;
+
+    }
+
+
+    .field {
+
+        height:
+            400px;
+
+    }
+
+
+    .target {
+
+        width:
+            125px;
+
+        height:
+            125px;
+
+    }
+
+
+    .target::before {
+
+        width:
+            80px;
+
+        height:
+            80px;
+
+    }
+
+
+    .command-dock {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+
+    .command-meta {
+
+        width:
+            100%;
+
+        border-left:
+            none;
+
+        border-top:
+            1px solid
+            var(--line);
+
+        flex-direction:
+            row;
+
+        align-items:
+            center;
+
+        min-height:
+            60px;
+
+    }
+
+
+    .index-items {
+
+        grid-template-columns:
+            repeat(3, 1fr);
+
+    }
+
+
+    .palette {
+
+        grid-template-columns:
+            repeat(4, 1fr);
+
+    }
+
+
+    .bottom {
+
+        flex-direction:
+            column;
+
+        align-items:
+            flex-start;
+
+        gap:
+            12px;
+
+    }
+
+
+    .stats {
+
+        flex-wrap:
+            wrap;
+
+        gap:
+            15px;
+
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="app">
+
+
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
+
+    <header>
+
+        <div class="brand">
+
+            <div class="mark"></div>
+
+            <div>
+
+                <div class="title">
+                    Adaptive Space
+                </div>
+
+                <div class="subtitle">
+                    Multimodal interaction system
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="header-right">
+
+            <div class="live-indicator">
+
+                <span class="live-dot"></span>
+
+                Adaptive system active
+
+            </div>
+
+            <div id="clock">
+                00:00:00
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- =====================================================
+         MAIN
+    ====================================================== -->
+
+    <main class="main">
+
+
+        <!-- HERO -->
+
+        <div class="hero">
+
+            <div class="hero-small">
+                Interface / 01
+            </div>
+
+            <div class="hero-title">
+
+                ADAPT<span>IVE</span>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             INTERACTIVE FIELD
+        ================================================== -->
+
+        <section
+            class="field"
+            id="field"
+        >
+
+            <div
+                class="field-glow"
+                id="fieldGlow"
+            ></div>
+
+
+            <div class="coordinate top">
+                00 / INTERACTION FIELD
+            </div>
+
+
+            <div class="mode-label">
+
+                <div
+                    class="mode-name"
+                    id="mode"
+                >
+                    READY
+                </div>
+
+                <div
+                    class="mode-description"
+                    id="modeDescription"
+                >
+                    waiting for input
+                </div>
+
+            </div>
+
+
+            <!-- ADAPTIVE TARGET -->
+
+            <div
+                class="target"
+                id="target"
+            >
+
+                <div class="target-label">
+                    adaptive response
+                </div>
+
+            </div>
+
+
+            <div
+                class="coordinate bottom"
+                id="coordinates"
+            >
+                X 000 / Y 000
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             MODALITY INDEX
+        ================================================== -->
+
+        <section class="index">
+
+            <div class="index-title">
+                Active modalities
+            </div>
+
+
+            <div class="index-items">
+
+
+                <div class="index-item">
+
+                    <div class="index-number">
+                        01
+                    </div>
+
+                    POINTER
+
+                </div>
+
+
+                <div class="index-item">
+
+                    <div class="index-number">
+                        02
+                    </div>
+
+                    KEYBOARD
+
+                </div>
+
+
+                <div class="index-item">
+
+                    <div class="index-number">
+                        03
+                    </div>
+
+                    TOUCH
+
+                </div>
+
+
+                <div class="index-item">
+
+                    <div class="index-number">
+                        04
+                    </div>
+
+                    VOICE
+
+                </div>
+
+
+                <div class="index-item">
+
+                    <div class="index-number">
+                        05
+                    </div>
+
+                    GAMEPAD
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             COMMAND DOCK
+        ================================================== -->
+
+        <section class="command-dock">
+
+
+            <div>
+
+                <textarea
+                    id="commandInput"
+                    spellcheck="false"
+                    placeholder="Type naturally — the interface responds as you type..."
+                ></textarea>
+
+
+                <button
+                    type="button"
+                    class="voice"
+                    id="voiceButton"
+                >
+                    🎤 Voice Input
+                </button>
+
+            </div>
+
+
+            <div class="command-meta">
+
+                <div>
+
+                    <div class="meta-label">
+                        Input
+                    </div>
+
+                    <div
+                        class="meta-value"
+                        id="inputMode"
+                    >
+                        IDLE
+                    </div>
+
+                </div>
+
+
+                <div>
+
+                    <div class="meta-label">
+                        Characters
+                    </div>
+
+                    <div
+                        class="meta-value"
+                        id="characterCount"
+                    >
+                        0
+                    </div>
+
+                </div>
+
+
+                <div>
+
+                    <div class="meta-label">
+                        Voice
+                    </div>
+
+                    <div
+                        class="meta-value"
+                        id="voiceState"
+                    >
+                        READY
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             COLOR STRIP
+        ================================================== -->
+
+        <div class="palette">
+
+
+            <div
+                class="color"
+                data-color="red"
+                style="background:#ef4444"
+            ></div>
+
+
+            <div
+                class="color"
+                data-color="blue"
+                style="background:#3b82f6"
+            ></div>
+
+
+            <div
+                class="color"
+                data-color="green"
+                style="background:#22c55e"
+            ></div>
+
+
+            <div
+                class="color"
+                data-color="purple"
+                style="background:#8b5cf6"
+            ></div>
+
+
+            <div
+                class="color"
+                data-color="orange"
+                style="background:#f97316"
+            ></div>
+
+
+            <div
+                class="color"
+                data-color="pink"
+                style="background:#ec4899"
+            ></div>
+
+
+            <div
+                class="color"
+                data-color="yellow"
+                style="background:#eab308"
+            ></div>
+
+
+            <div
+                class="color"
+                data-color="teal"
+                style="background:#14b8a6"
+            ></div>
+
+
+        </div>
+
+
+        <!-- =================================================
+             BOTTOM DATA
+        ================================================== -->
+
+        <section class="bottom">
+
+
+            <div class="stats">
+
+
+                <div class="stat">
+
+                    <span
+                        class="stat-number"
+                        id="interactionCount"
+                    >
+                        0
+                    </span>
+
+                    <span class="stat-label">
+                        interactions
+                    </span>
+
+                </div>
+
+
+                <div class="stat">
+
+                    <span
+                        class="stat-number"
+                        id="keyCount"
+                    >
+                        0
+                    </span>
+
+                    <span class="stat-label">
+                        keys
+                    </span>
+
+                </div>
+
+
+                <div class="stat">
+
+                    <span
+                        class="stat-number"
+                        id="touchCount"
+                    >
+                        0
+                    </span>
+
+                    <span class="stat-label">
+                        touches
+                    </span>
+
+                </div>
+
+
+                <div class="stat">
+
+                    <span
+                        class="stat-number"
+                        id="currentColor"
+                    >
+                        PURPLE
+                    </span>
+
+                    <span class="stat-label">
+                        environment
+                    </span>
+
+                </div>
+
+
+            </div>
+
+
+            <div
+                class="ticker"
+                id="ticker"
+            >
+
+                <strong>SYSTEM</strong>
+                — Adaptive environment ready
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+</div>
+
+
+<script>
+
+/* =========================================================
+   COLORS
+========================================================= */
+
+const colors = {
+
+    red: "#ef4444",
+
+    blue: "#3b82f6",
+
+    green: "#22c55e",
+
+    purple: "#8b5cf6",
+
+    orange: "#f97316",
+
+    pink: "#ec4899",
+
+    yellow: "#eab308",
+
+    teal: "#14b8a6"
+
+};
+
+
+/* =========================================================
+   STATE
+========================================================= */
+
+let currentColor =
+    "purple";
+
+let interactions =
+    0;
+
+let keys =
+    0;
+
+let touches =
+    0;
+
+let eventCount =
+    0;
+
+let lastPointerLog =
+    0;
+
+let lastKeyTime =
+    0;
+
+
+/* =========================================================
+   ELEMENTS
+========================================================= */
+
+const root =
+    document.documentElement;
+
+
+const body =
+    document.body;
+
+
+const field =
+    document.getElementById(
+        "field"
+    );
+
+
+const target =
+    document.getElementById(
+        "target"
+    );
+
+
+const mode =
+    document.getElementById(
+        "mode"
+    );
+
+
+const modeDescription =
+    document.getElementById(
+        "modeDescription"
+    );
+
+
+const coordinates =
+    document.getElementById(
+        "coordinates"
+    );
+
+
+const commandInput =
+    document.getElementById(
+        "commandInput"
+    );
+
+
+const inputMode =
+    document.getElementById(
+        "inputMode"
+    );
+
+
+const characterCount =
+    document.getElementById(
+        "characterCount"
+    );
+
+
+const voiceButton =
+    document.getElementById(
+        "voiceButton"
+    );
+
+
+const voiceState =
+    document.getElementById(
+        "voiceState"
+    );
+
+
+const interactionCount =
+    document.getElementById(
+        "interactionCount"
+    );
+
+
+const keyCount =
+    document.getElementById(
+        "keyCount"
+    );
+
+
+const touchCount =
+    document.getElementById(
+        "touchCount"
+    );
+
+
+const currentColorText =
+    document.getElementById(
+        "currentColor"
+    );
+
+
+const ticker =
+    document.getElementById(
+        "ticker"
+    );
+
+
+const clock =
+    document.getElementById(
+        "clock"
+    );
+
+
+/* =========================================================
+   RGB
+========================================================= */
+
+function hexToRgb(hex) {
+
+    hex =
+        hex.replace(
+            "#",
+            ""
+        );
+
+
+    return [
+
+        parseInt(
+            hex.substring(0,2),
+            16
+        ),
+
+        parseInt(
+            hex.substring(2,4),
+            16
+        ),
+
+        parseInt(
+            hex.substring(4,6),
+            16
+        )
+
+    ].join(", ");
+
+}
+
+
+/* =========================================================
+   CHANGE COLOR
+========================================================= */
+
+function changeColor(
+    name
+) {
+
+    if (
+        !colors[name]
+    ) {
+
+        return;
+
+    }
+
+
+    currentColor =
+        name;
+
+
+    root.style.setProperty(
+        "--accent",
+        colors[name]
+    );
+
+
+    root.style.setProperty(
+        "--accent-rgb",
+        hexToRgb(
+            colors[name]
+        )
+    );
+
+
+    currentColorText.textContent =
+        name.toUpperCase();
+
+
+    mode.textContent =
+        "COLOR";
+
+
+    modeDescription.textContent =
+        "environment adapted";
+
+
+    reactTarget();
+
+
+    updateTicker(
+        "COLOR",
+        "Environment changed to " + name
+    );
+
+}
+
+
+/* =========================================================
+   GENERAL ADAPTATION
+========================================================= */
+
+function adapt(
+    type,
+    description
+) {
+
+    interactions++;
+
+
+    interactionCount.textContent =
+        interactions;
+
+
+    mode.textContent =
+        type.toUpperCase();
+
+
+    inputMode.textContent =
+        type.toUpperCase();
+
+
+    modeDescription.textContent =
+        description;
+
+
+    reactTarget();
+
+
+    body.style.filter =
+        "brightness(1.035)";
+
+
+    setTimeout(
+        () => {
+
+            body.style.filter =
+                "brightness(1)";
+
+        },
+        120
+    );
+
+
+    updateTicker(
+        type.toUpperCase(),
+        description
+    );
+
+}
+
+
+/* =========================================================
+   TARGET REACTION
+========================================================= */
+
+function reactTarget() {
+
+    target.classList.remove(
+        "react"
+    );
+
+
+    void target.offsetWidth;
+
+
+    target.classList.add(
+        "react"
+    );
+
+
+    setTimeout(
+        () => {
+
+            target.classList.remove(
+                "react"
+            );
+
+        },
+        500
+    );
+
+}
+
+
+/* =========================================================
+   INTERACTION EFFECT
+========================================================= */
+
+function createEffect(
+    x,
+    y
+) {
+
+
+    /* Ripple */
+
+    const ripple =
+        document.createElement(
+            "div"
+        );
+
+
+    ripple.className =
+        "effect ripple";
+
+
+    ripple.style.left =
+        x + "px";
+
+
+    ripple.style.top =
+        y + "px";
+
+
+    document.body.appendChild(
+        ripple
+    );
+
+
+    setTimeout(
+        () => ripple.remove(),
+        850
+    );
+
+
+    /* Flash */
+
+    const flash =
+        document.createElement(
+            "div"
+        );
+
+
+    flash.className =
+        "effect flash";
+
+
+    flash.style.left =
+        x + "px";
+
+
+    flash.style.top =
+        y + "px";
+
+
+    document.body.appendChild(
+        flash
+    );
+
+
+    setTimeout(
+        () => flash.remove(),
+        650
+    );
+
+
+    /* Particles */
+
+    for (
+        let i = 0;
+        i < 12;
+        i++
+    ) {
+
+        const particle =
+            document.createElement(
+                "div"
+            );
+
+
+        particle.className =
+            "effect particle";
+
+
+        particle.style.left =
+            x + "px";
+
+
+        particle.style.top =
+            y + "px";
+
+
+        const angle =
+            Math.random()
+            * Math.PI
+            * 2;
+
+
+        const distance =
+            25 +
+            Math.random() * 90;
+
+
+        particle.style.setProperty(
+            "--dx",
+            Math.cos(angle)
+            * distance
+            + "px"
+        );
+
+
+        particle.style.setProperty(
+            "--dy",
+            Math.sin(angle)
+            * distance
+            + "px"
+        );
+
+
+        document.body.appendChild(
+            particle
+        );
+
+
+        setTimeout(
+            () => particle.remove(),
+            800
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   CLICK ANYWHERE
+========================================================= */
+
+document.addEventListener(
+    "click",
+    function(event) {
+
+
+        if (
+            event.target.closest(
+                ".color"
+            )
+        ) {
+
+            return;
+
+        }
+
+
+        if (
+            event.target.closest(
+                "#voiceButton"
+            )
+        ) {
+
+            return;
+
+        }
+
+
+        adapt(
+            "Click",
+            "screen interaction detected"
+        );
+
+
+        createEffect(
+            event.clientX,
+            event.clientY
+        );
+
+    }
+);
+
+
+/* =========================================================
+   POINTER MOVEMENT
+========================================================= */
+
+document.addEventListener(
+    "mousemove",
+    function(event) {
+
+
+        const x =
+            event.clientX /
+            window.innerWidth *
+            100;
+
+
+        const y =
+            event.clientY /
+            window.innerHeight *
+            100;
+
+
+        root.style.setProperty(
+            "--pointer-x",
+            x + "%"
+        );
+
+
+        root.style.setProperty(
+            "--pointer-y",
+            y + "%"
+        );
+
+
+        coordinates.textContent =
+            `X ${String(
+                Math.round(
+                    event.clientX
+                )
+            ).padStart(3,"0")}
+             / Y ${String(
+                Math.round(
+                    event.clientY
+                )
+            ).padStart(3,"0")}`;
+
+
+        /* Target follows pointer */
+
+        const fieldRect =
+            field.getBoundingClientRect();
+
+
+        const relativeX =
+            event.clientX -
+            fieldRect.left;
+
+
+        const relativeY =
+            event.clientY -
+            fieldRect.top;
+
+
+        const centerX =
+            fieldRect.width / 2;
+
+
+        const centerY =
+            fieldRect.height / 2;
+
+
+        const moveX =
+            (relativeX - centerX)
+            * .025;
+
+
+        const moveY =
+            (relativeY - centerY)
+            * .025;
+
+
+        target.style.marginLeft =
+            moveX + "px";
+
+
+        target.style.marginTop =
+            moveY + "px";
+
+
+        /* Occasional pointer response */
+
+        const now =
+            Date.now();
+
+
+        if (
+            now - lastPointerLog >
+            1600
+        ) {
+
+            lastPointerLog =
+                now;
+
+
+            updateTicker(
+                "POINTER",
+                "Pointer movement detected"
+            );
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   KEYBOARD
+========================================================= */
+
+document.addEventListener(
+    "keydown",
+    function(event) {
+
+
+        keys++;
+
+
+        keyCount.textContent =
+            keys;
+
+
+        adapt(
+            "Keyboard",
+            "keyboard interaction detected"
+        );
+
+
+        const keyColors = {
+
+            "1": "red",
+
+            "2": "blue",
+
+            "3": "green",
+
+            "4": "purple",
+
+            "5": "orange",
+
+            "6": "pink",
+
+            "7": "yellow",
+
+            "8": "teal"
+
+        };
+
+
+        if (
+            keyColors[event.key]
+        ) {
+
+            changeColor(
+                keyColors[event.key]
+            );
+
+        }
+
+
+        const now =
+            Date.now();
+
+
+        if (
+            lastKeyTime
+        ) {
+
+            const difference =
+                now -
+                lastKeyTime;
+
+
+            if (
+                difference < 120
+            ) {
+
+                modeDescription.textContent =
+                    "rapid keyboard activity";
+
+            }
+
+        }
+
+
+        lastKeyTime =
+            now;
+
+    }
+);
+
+
+/* =========================================================
+   TYPING
+========================================================= */
+
+commandInput.addEventListener(
+    "input",
+    function() {
+
+
+        const text =
+            this.value;
+
+
+        characterCount.textContent =
+            text.length;
+
+
+        adapt(
+            "Typing",
+            "text input adapting environment"
+        );
+
+
+        const lower =
+            text.toLowerCase();
+
+
+        /* Detect colors */
+
+        for (
+            const color in colors
+        ) {
+
+            if (
+                lower.includes(color)
+            ) {
+
+                changeColor(
+                    color
+                );
+
+                break;
+
+            }
+
+        }
+
+
+        /* Bigger */
+
+        if (
+            lower.includes(
+                "bigger"
+            ) ||
+            lower.includes(
+                "larger"
+            )
+        ) {
+
+            body.classList.add(
+                "touch-mode"
+            );
+
+        }
+
+
+        /* Smaller */
+
+        if (
+            lower.includes(
+                "smaller"
+            )
+        ) {
+
+            body.classList.remove(
+                "touch-mode"
+            );
+
+        }
+
+
+        /* Reset */
+
+        if (
+            lower.includes(
+                "reset"
+            )
+        ) {
+
+            changeColor(
+                "purple"
+            );
+
+            body.classList.remove(
+                "touch-mode"
+            );
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   TOUCH
+========================================================= */
+
+document.addEventListener(
+    "touchstart",
+    function(event) {
+
+
+        touches++;
+
+
+        touchCount.textContent =
+            touches;
+
+
+        body.classList.add(
+            "touch-mode"
+        );
+
+
+        adapt(
+            "Touch",
+            "touch-adaptive mode enabled"
+        );
+
+
+        const touch =
+            event.touches[0];
+
+
+        if (touch) {
+
+            createEffect(
+                touch.clientX,
+                touch.clientY
+            );
+
+        }
+
+    },
+    {
+        passive: true
+    }
+);
+
+
+/* =========================================================
+   COLOR BUTTONS
+========================================================= */
+
+document
+    .querySelectorAll(
+        ".color"
+    )
+    .forEach(
+        function(element) {
+
+
+            element.addEventListener(
+                "click",
+                function(event) {
+
+
+                    const color =
+                        this.dataset.color;
+
+
+                    changeColor(
+                        color
+                    );
+
+
+                    adapt(
+                        "Color",
+                        "direct color interaction"
+                    );
+
+
+                    createEffect(
+                        event.clientX,
+                        event.clientY
+                    );
+
+                }
+            );
+
+        }
+    );
+
+
+/* =========================================================
+   VOICE RECOGNITION
+========================================================= */
+
+const SpeechRecognition =
+    window.SpeechRecognition ||
+    window.webkitSpeechRecognition;
+
+
+let recognition =
+    null;
+
+
+if (
+    SpeechRecognition
+) {
+
+
+    recognition =
+        new SpeechRecognition();
+
+
+    recognition.continuous =
+        false;
+
+
+    recognition.interimResults =
+        false;
+
+
+    recognition.lang =
+        "en-US";
+
+
+    recognition.onstart =
+        function() {
+
+
+            voiceButton.textContent =
+                "● Listening...";
+
+
+            voiceButton.classList.add(
+                "listening"
+            );
+
+
+            voiceState.textContent =
+                "LISTENING";
+
+
+            adapt(
+                "Voice",
+                "listening for command"
+            );
+
+        };
+
+
+    recognition.onresult =
+        function(event) {
+
+
+            const spoken =
+                event.results[0][0]
+                    .transcript
+                    .toLowerCase();
+
+
+            voiceState.textContent =
+                "RECEIVED";
+
+
+            /* Put speech in typing box */
+
+            commandInput.value =
+                spoken;
+
+
+            characterCount.textContent =
+                spoken.length;
+
+
+            /* Colors */
+
+            for (
+                const color in colors
+            ) {
+
+                if (
+                    spoken.includes(color)
+                ) {
+
+                    changeColor(
+                        color
+                    );
+
+                    break;
+
+                }
+
+            }
+
+
+            /* Bigger */
+
+            if (
+                spoken.includes(
+                    "bigger"
+                ) ||
+                spoken.includes(
+                    "larger"
+                )
+            ) {
+
+                body.classList.add(
+                    "touch-mode"
+                );
+
+            }
+
+
+            /* Smaller */
+
+            if (
+                spoken.includes(
+                    "smaller"
+                ) ||
+                spoken.includes(
+                    "normal"
+                )
+            ) {
+
+                body.classList.remove(
+                    "touch-mode"
+                );
+
+            }
+
+
+            /* Reset */
+
+            if (
+                spoken.includes(
+                    "reset"
+                )
+            ) {
+
+                commandInput.value =
+                    "";
+
+                characterCount.textContent =
+                    "0";
+
+                body.classList.remove(
+                    "touch-mode"
+                );
+
+                changeColor(
+                    "purple"
+                );
+
+            }
+
+
+            updateTicker(
+                "VOICE",
+                "Heard: " + spoken
+            );
+
+        };
+
+
+    recognition.onend =
+        function() {
+
+
+            voiceButton.textContent =
+                "🎤 Voice Input";
+
+
+            voiceButton.classList.remove(
+                "listening"
+            );
+
+
+            voiceState.textContent =
+                "READY";
+
+        };
+
+
+    recognition.onerror =
+        function() {
+
+
+            voiceButton.textContent =
+                "🎤 Voice Input";
+
+
+            voiceButton.classList.remove(
+                "listening"
+            );
+
+
+            voiceState.textContent =
+                "ERROR";
+
+        };
+
+
+    voiceButton.addEventListener(
+        "click",
+        function(event) {
+
+
+            event.stopPropagation();
+
+
+            try {
+
+                recognition.start();
+
+            }
+
+            catch(error) {
+
+                /* Already listening */
+
+            }
+
+        }
+    );
+
+}
+
+else {
+
+    voiceButton.textContent =
+        "Voice unavailable";
+
+
+    voiceButton.disabled =
+        true;
+
+
+    voiceState.textContent =
+        "UNAVAILABLE";
+
+}
+
+
+/* =========================================================
+   GAMEPAD
+========================================================= */
+
+let gamepadRunning =
+    false;
+
+
+window.addEventListener(
+    "gamepadconnected",
+    function() {
+
+
+        updateTicker(
+            "GAMEPAD",
+            "Gamepad connected"
+        );
+
+
+        if (
+            !gamepadRunning
+        ) {
+
+            gamepadRunning =
+                true;
+
+            gamepadLoop();
+
+        }
+
+    }
+);
+
+
+function gamepadLoop() {
+
+
+    const gamepads =
+        navigator.getGamepads();
+
+
+    let gp =
+        null;
+
+
+    for (
+        const gamepad of gamepads
+    ) {
+
+        if (
+            gamepad
+        ) {
+
+            gp =
+                gamepad;
+
+            break;
+
+        }
+
+    }
+
+
+    if (
+        gp
+    ) {
+
+
+        const x =
+            gp.axes[0] || 0;
+
+
+        const y =
+            gp.axes[1] || 0;
+
+
+        target.style.marginLeft =
+            x * 35 + "px";
+
+
+        target.style.marginTop =
+            y * 35 + "px";
+
+
+        if (
+            Math.abs(x) > .15 ||
+            Math.abs(y) > .15
+        ) {
+
+            mode.textContent =
+                "GAMEPAD";
+
+
+            modeDescription.textContent =
+                "controller movement";
+
+
+            inputMode.textContent =
+                "GAMEPAD";
+
+        }
+
+
+        if (
+            gp.buttons[0] &&
+            gp.buttons[0].pressed
+        ) {
+
+            reactTarget();
+
+        }
+
+    }
+
+
+    requestAnimationFrame(
+        gamepadLoop
+    );
+
+}
+
+
+/* =========================================================
+   EVENT TICKER
+========================================================= */
+
+function updateTicker(
+    type,
+    message
+) {
+
+
+    eventCount++;
+
+
+    const time =
+        new Date()
+            .toLocaleTimeString(
+                [],
+                {
+                    hour:
+                        "2-digit",
+
+                    minute:
+                        "2-digit",
+
+                    second:
+                        "2-digit"
+                }
+            );
+
+
+    ticker.innerHTML =
+        `<strong>${type}</strong>
+         — ${message}
+         · ${time}`;
+
+}
+
+
+/* =========================================================
+   CLOCK
+========================================================= */
+
+function updateClock() {
+
+    clock.textContent =
+        new Date()
+            .toLocaleTimeString(
+                [],
+                {
+                    hour:
+                        "2-digit",
+
+                    minute:
+                        "2-digit",
+
+                    second:
+                        "2-digit"
+                }
+            );
+
+}
+
+
+setInterval(
+    updateClock,
+    1000
+);
+
+
+updateClock();
+
+
+/* =========================================================
+   INITIAL STATE
+========================================================= */
+
+updateTicker(
+    "SYSTEM",
+    "Adaptive environment ready"
+);
+
+</script>
+
+</body>
+
+</html>
